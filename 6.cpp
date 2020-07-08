@@ -23,31 +23,62 @@ int main()
         int n;
         ll x;
         cin >> n >> x;
-        vl A(n);
+        deque<ll> q;
+        ll temp;
         for(int i = 0 ; i < n; i++) {
-            cin >> A[i];
+            cin >> temp;
+            q.PB(temp);
         }
+        sort(q.begin(), q.end());
         ll days = 0;
-        sort(A.begin(), A.end(), greater<int>());
-
-        for(int i = 0; i < n; i++) {
-            while(1) {
-                if(A[i] <= x) {
-               //     cout << A[i] << " " << days << "\n";
-                    x = 2*A[i];
-                    days++;
-                    break;
-                }
-                ll temp = A[i];
-                A[i] -= x;
-                x = 2*x;
-                days++;
-                A[i] = min(2*A[i],temp);
-              //  cout << A[i] << " " << x << "\n";
-
+        deque<ll> ass;
+        
+        while(q.size() != 0) {
+        	if(q.front()*2  < x ) {
+        		ass.PB(q.front());
+        		q.pop_front();
+        		
+			}
+			else {
+				break;
+			}
+        	
+		}
+        while(q.size() != 0) {
+            if(x >= q.front()) {
+                x = 2*q.front();
+                q.pop_front();
             }
+            else {
+                ll temp = q.back();  
+                q.back() -= x;
+                x = 2* x;
+                q.back() = min(2*q.back(), temp);
+            }
+            
+        days++;
+        
         }
-        cout << days << "\n";
+        sort(ass.begin(), ass.end()) ;
+        
+        
+        while(ass.size() != 0) {
+        	if(x >= ass.front()) {
+        		x = 2 * ass.front();
+        		ass.pop_front();
+			}
+			else {
+				ll temp = ass.back();
+				ass.back() -= x;
+				x = 2*x;
+				ass.back() = min(2*ass.back(), temp);
+			}
+			days++;
+			
+		}
+		cout << days << "\n";
+        
+        
         
 
         
